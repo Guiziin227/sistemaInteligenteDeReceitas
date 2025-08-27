@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=receitasdb
+      - POSTGRES_ROOT_PASSWORD=123456
