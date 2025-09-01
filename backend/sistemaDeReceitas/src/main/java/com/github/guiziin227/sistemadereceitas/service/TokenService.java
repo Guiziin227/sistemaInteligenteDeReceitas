@@ -2,6 +2,7 @@ package com.github.guiziin227.sistemadereceitas.service;
 
 import com.github.guiziin227.sistemadereceitas.dtos.request.LoginRequestDTO;
 import com.github.guiziin227.sistemadereceitas.dtos.response.LoginResponseDTO;
+import com.github.guiziin227.sistemadereceitas.entities.Role;
 import com.github.guiziin227.sistemadereceitas.entities.User;
 import com.github.guiziin227.sistemadereceitas.repository.UserRepository;
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class TokenService {
 
         var scope = user.getRoles()
                 .stream()
-                .map(role -> "ROLE_" + role.getName())
+                .map(Role::getName)
                 .collect(Collectors.joining(" "));
 
         System.out.println(scope);
@@ -67,7 +68,7 @@ public class TokenService {
                 .claim("scope", scope)
                 .build();
 
-
+        System.out.println(claims);
         //gerando o token
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
