@@ -17,3 +17,4 @@ jwt:
   key:
     public: classpath:app.pub
     private: classpath:app.key
+
