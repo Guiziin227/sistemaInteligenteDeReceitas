@@ -1,5 +1,6 @@
 package com.github.guiziin227.sistemadereceitas.entities;
 
+import com.github.guiziin227.sistemadereceitas.dtos.request.LoginRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +13,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -35,6 +37,9 @@ public class User implements Serializable {
     @Column(nullable = false, length = 30)
     private String firstName;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private String password;
 
@@ -53,13 +58,26 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(UUID userId, String firstName, String password, Set<Role> roles, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(UUID userId, String firstName, String email, String password, Set<Role> roles, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.firstName = firstName;
+        this.email = email;
         this.password = password;
         this.roles = roles;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isLoginCorrect(LoginRequestDTO rawPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword.password(), this.password);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public UUID getUserId() {
