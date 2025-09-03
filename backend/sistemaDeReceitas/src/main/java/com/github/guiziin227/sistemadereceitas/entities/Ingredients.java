@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -34,10 +35,9 @@ public class Ingredients implements Serializable {
     @ManyToMany(mappedBy = "ingredientsUsed")
     private Set<GeneratedRecipe> recipes = new HashSet<>();
 
-    public Ingredients(Long id, String displayName, String normalizedName, Set<GeneratedRecipe> recipes) {
+    public Ingredients(Long id, String displayName, Set<GeneratedRecipe> recipes) {
         this.id = id;
-        this.displayName = displayName;
-        this.normalizedName = normalizedName;
+        this.setDisplayName(displayName);
         this.recipes = recipes;
     }
 
@@ -58,15 +58,22 @@ public class Ingredients implements Serializable {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+        this.normalizedName = normalize(displayName);
+    }
+
+    private String normalize(String displayName) {
+        if (displayName == null || displayName.isBlank()) return "";
+        String normalizedName = displayName.toLowerCase().trim();
+        normalizedName = Normalizer.normalize(normalizedName, Normalizer.Form.NFD);
+        normalizedName = normalizedName.replaceAll("\\p{InCOMBINING_DIACRITICAL_MARKS}", "");
+        return normalizedName;
     }
 
     public String getNormalizedName() {
         return normalizedName;
     }
 
-    public void setNormalizedName(String normalizedName) {
-        this.normalizedName = normalizedName;
-    }
+   
 
     public Set<GeneratedRecipe> getRecipes() {
         return recipes;
