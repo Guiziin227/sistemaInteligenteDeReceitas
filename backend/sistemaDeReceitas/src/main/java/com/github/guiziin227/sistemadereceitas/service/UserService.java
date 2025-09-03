@@ -58,5 +58,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public UserResponseDTO getUserByEmail(String email) {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        return new UserResponseDTO(
+                user.getFirstName(),
+                user.getEmail(),
+                user.getRoles().stream()
+                        .map(Role::getName)
+                        .toList()
+        );
+
+    }
 
 }
