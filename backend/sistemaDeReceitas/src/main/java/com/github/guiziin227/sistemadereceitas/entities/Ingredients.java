@@ -35,13 +35,12 @@ public class Ingredients implements Serializable {
     @ManyToMany(mappedBy = "ingredientsUsed")
     private Set<GeneratedRecipe> recipes = new HashSet<>();
 
-    public Ingredients(Long id, String displayName, Set<GeneratedRecipe> recipes) {
-        this.id = id;
+    public Ingredients(String displayName) {
         this.setDisplayName(displayName);
-        this.recipes = recipes;
     }
 
-    public Ingredients() {}
+    public Ingredients() {
+    }
 
     public Long getId() {
 
@@ -73,7 +72,6 @@ public class Ingredients implements Serializable {
         return normalizedName;
     }
 
-   
 
     public Set<GeneratedRecipe> getRecipes() {
         return recipes;
