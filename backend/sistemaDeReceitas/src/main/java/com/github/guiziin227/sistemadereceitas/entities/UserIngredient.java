@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -25,11 +26,11 @@ public class UserIngredient implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "ingredient_id", nullable = false)
+    @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredients ingredient;
 
     @Column(nullable = false, precision = 10, scale = 2)
