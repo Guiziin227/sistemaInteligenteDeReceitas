@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -56,9 +59,17 @@ public class User implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<UserIngredient> userIngredients = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<GeneratedRecipe> generatedRecipes = new HashSet<>();
+
+
+
     public User() {}
 
-    public User(UUID userId, String firstName, String email, String password, Set<Role> roles, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(UUID userId, String firstName, String email, String password, Set<Role> roles, LocalDateTime createdAt, LocalDateTime updatedAt, Set<UserIngredient> userIngredients, Set<GeneratedRecipe> generatedRecipes) {
         this.userId = userId;
         this.firstName = firstName;
         this.email = email;
@@ -66,10 +77,28 @@ public class User implements Serializable {
         this.roles = roles;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.userIngredients = userIngredients;
+        this.generatedRecipes = generatedRecipes;
     }
 
     public boolean isLoginCorrect(LoginRequestDTO rawPassword, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(rawPassword.password(), this.password);
+    }
+
+    public Set<UserIngredient> getUserIngredients() {
+        return userIngredients;
+    }
+
+    public void setUserIngredients(Set<UserIngredient> userIngredients) {
+        this.userIngredients = userIngredients;
+    }
+
+    public Set<GeneratedRecipe> getGeneratedRecipes() {
+        return generatedRecipes;
+    }
+
+    public void setGeneratedRecipes(Set<GeneratedRecipe> generatedRecipes) {
+        this.generatedRecipes = generatedRecipes;
     }
 
     public String getEmail() {
