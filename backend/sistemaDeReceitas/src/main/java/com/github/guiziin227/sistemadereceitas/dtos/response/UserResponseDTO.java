@@ -1,10 +1,10 @@
 package com.github.guiziin227.sistemadereceitas.dtos.response;
 
-import com.github.guiziin227.sistemadereceitas.entities.Role;
+import java.util.List;
 
 public record UserResponseDTO(
         String firstName,
         String email,
-        Role role
+        List<String> role
 ) {
 }
