@@ -16,7 +16,7 @@ public class UserIngredientService {
         this.userIngredientRepository = userIngredientRepository;
     }
 
-    public void create(R) {
+    public void create() {
         // Implement service methods here
     }
 
