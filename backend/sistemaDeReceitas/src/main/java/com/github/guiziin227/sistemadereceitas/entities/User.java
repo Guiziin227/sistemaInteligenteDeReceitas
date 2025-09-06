@@ -1,5 +1,6 @@
 package com.github.guiziin227.sistemadereceitas.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.guiziin227.sistemadereceitas.dtos.request.LoginRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -60,6 +60,7 @@ public class User implements Serializable {
     private LocalDateTime updatedAt;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonManagedReference
     private Set<UserIngredient> userIngredients = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
@@ -123,10 +124,6 @@ public class User implements Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
